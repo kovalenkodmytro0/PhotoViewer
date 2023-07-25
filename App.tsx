@@ -1,103 +1,29 @@
-import React, {useState, useEffect} from 'react';
-import {
-  FlatList,
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TextInput,
-} from 'react-native';
+import React from 'react';
+import 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import HomeScreen from './src/screens/HomeScreen';
+import ImageGalleryScreen from './src/screens/ImageGalleryScreen';
+import VideoGalleryScreen from './src/screens/VideoGalleryScreen';
 
-const ACCES_KEY = 'pCMRnTkNcwNdFyzrVugDdpc2i6hD8o5ucHhZ0x3zjkdCRflJmL9QQvAw';
-const API_URL = `https://api.pexels.com/v1/search?query=mountains&orientation=portrait&size=small&per_page=10`;
+export type AppStackParamList = {
+  Gallery: undefined;
+  ImageGallery: undefined;
+  VideoGallery: undefined;
+};
 
-let deviceHeight = Dimensions.get('window').height;
-let deviceWidth = Dimensions.get('window').width;
+const Stack = createNativeStackNavigator<AppStackParamList>();
 
 function App(): JSX.Element {
-  const [images, setImages] = useState(null);
-  const [text, setChangeText] = useState('');
-
-  const onChangeText = (query: string) => {
-    setChangeText(query);
-  };
-
-  const getImages = async () => {
-    const data = await fetch(API_URL, {
-      headers: {
-        Authorization: ACCES_KEY,
-      },
-    });
-    const {photos} = await data.json();
-    return photos;
-  };
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      const images = await getImages();
-      setImages(images);
-    };
-
-    fetchImages();
-  }, []);
-
-  // if (!images) {
-  //   return <Text>Loading...</Text>;
-  // }
-
   return (
-    <View style={styles.body}>
-      <FlatList
-        data={images}
-        keyExtractor={item => item.id.toString()}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        renderItem={({item}) => {
-          return (
-            <View>
-              <ImageBackground
-                source={{uri: item.src.portrait}}
-                style={styles.image}
-              />
-            </View>
-          );
-        }}
-      />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Ocean, Tigers, Pears"
-          onChangeText={onChangeText}
-          value={text}
-        />
-      </View>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Gallery" component={HomeScreen} />
+        <Stack.Screen name="ImageGallery" component={ImageGalleryScreen} />
+        <Stack.Screen name="VideoGallery" component={VideoGalleryScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  body: {},
-  image: {
-    width: deviceWidth,
-    height: deviceHeight,
-  },
-  inputContainer: {
-    position: 'absolute',
-    top: 50,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    alignItems: 'center',
-  },
-  input: {
-    width: deviceWidth - 50,
-    height: 50,
-    borderWidth: 1,
-    padding: 10,
-  },
-});
 
 export default App;
