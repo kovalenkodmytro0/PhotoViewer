@@ -1,28 +1,24 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   FlatList,
-  Image,
   ImageBackground,
   StyleSheet,
-  Text,
   View,
   Dimensions,
   TextInput,
+  Button,
 } from 'react-native';
 import {ACCES_KEY} from '../constants/constants';
 
 let deviceHeight = Dimensions.get('window').height;
 let deviceWidth = Dimensions.get('window').width;
 
-const API_URL = `https://api.pexels.com/v1/search?query=mountains&orientation=portrait&size=small&per_page=5`;
-
 const ImageGalleryScreen = () => {
   const [images, setImages] = useState(null);
-  const [text, setChangeText] = useState('');
+  const [query, setQuery] = useState('');
+  const [quantity, setQuantity] = useState('');
 
-  const onChangeText = (query: string) => {
-    setChangeText(query);
-  };
+  const API_URL = `https://api.pexels.com/v1/search?query=${query}&orientation=portrait&size=small&per_page=${quantity}}`;
 
   const getImages = async () => {
     const data = await fetch(API_URL, {
@@ -34,20 +30,35 @@ const ImageGalleryScreen = () => {
     return photos;
   };
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      const images = await getImages();
-      setImages(images);
-    };
+  const fetchImages = async () => {
+    const images = await getImages();
+    setImages(images);
+  };
 
-    fetchImages();
-  }, []);
+  // if (!images) {
+  //   return <Text>Loading...</Text>;
+  // }
 
-  if (!images) {
-    return <Text>Loading...</Text>;
-  }
   return (
     <View style={styles.body}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="e.g. Ocean, Tigers"
+          onChangeText={query => setQuery(query)}
+          onFocus={() => setQuery('')}
+          value={query}
+        />
+        <TextInput
+          style={styles.input}
+          inputMode="numeric"
+          placeholder=""
+          maxLength={2}
+          onChangeText={quantity => setQuantity(quantity)}
+          value={quantity}
+        />
+        <Button title="Search" onPress={() => fetchImages()}></Button>
+      </View>
       <FlatList
         data={images}
         keyExtractor={item => item.id.toString()}
@@ -65,14 +76,6 @@ const ImageGalleryScreen = () => {
           );
         }}
       />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Ocean, Tigers, Pears"
-          onChangeText={onChangeText}
-          value={text}
-        />
-      </View>
     </View>
   );
 };
@@ -84,18 +87,18 @@ const styles = StyleSheet.create({
     height: deviceHeight,
   },
   inputContainer: {
-    position: 'absolute',
-    top: 50,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    width: '100%',
+    height: 80,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
-    width: deviceWidth - 50,
+    width: deviceWidth - 250,
     height: 50,
     borderWidth: 1,
     padding: 10,
+    marginRight: 10,
   },
 });
 
