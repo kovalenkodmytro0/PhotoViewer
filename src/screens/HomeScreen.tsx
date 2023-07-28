@@ -1,20 +1,15 @@
 import * as React from 'react';
-import {Button, View, Text} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {AppStackParamList} from '../../App';
-
-export type Props = NativeStackNavigationProp<AppStackParamList, 'Gallery'>;
+import {View, StyleSheet} from 'react-native';
+import ImageGallery from '../components/ImageGallery';
 
 const HomeScreen = () => {
-  const navigation = useNavigation<Props>();
   return (
     <View>
-      <Button
-        title="Search Images"
-        onPress={() => navigation.navigate('ImageGallery')}></Button>
+      <ImageGallery />
     </View>
   );
 };
 
 export default HomeScreen;
+
+const styles = StyleSheet.create({});
