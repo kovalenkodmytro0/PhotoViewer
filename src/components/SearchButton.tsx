@@ -1,8 +1,12 @@
 import {View, Button} from 'react-native';
 import React from 'react';
-import {COLORS} from '../constants/constants';
 
-const SearchButton = ({title, onPress}) => {
+interface SearchButtonProps {
+  title: string;
+  onPress: () => void;
+}
+
+const SearchButton = ({title, onPress}: SearchButtonProps) => {
   return (
     <View>
       <Button title={title} onPress={onPress} />

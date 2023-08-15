@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {View, StyleSheet} from 'react-native';
-import ImageGallery from '../components/ImageGallery';
+import {View} from 'react-native';
+import ImageGallery from '../components/imageGallery/ImageGallery';
 
 const HomeScreen = () => {
   return (
@@ -11,5 +11,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({});

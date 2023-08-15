@@ -1,16 +1,12 @@
-import {StyleSheet, Text, View, TextInput} from 'react-native';
-import React, {useState} from 'react';
-import {COLORS} from '../constants/constants';
+import {View, TextInput, TextInputProps} from 'react-native';
+import React from 'react';
 
-const Input = props => {
-  const {placeholder} = props;
+const Input = (props: TextInputProps) => {
   return (
     <View>
-      <TextInput {...props} autoCorrect={false} placeholder={placeholder} />
+      <TextInput {...props} autoCorrect={false} />
     </View>
   );
 };
 
 export default Input;
-
-const styles = StyleSheet.create({});
