@@ -109,11 +109,15 @@ const ImageGalleryScreen = () => {
           showsHorizontalScrollIndicator={false}
           renderItem={({item}) => {
             return (
-              <View>
+              <View style={styles.imageList}>
                 <ImageBackground
                   source={{uri: item.src.portrait}}
                   style={styles.image}
                 />
+                <View style={styles.description}>
+                  <Text style={styles.alt}>{item.alt}</Text>
+                  <Text>{item.photographer}</Text>
+                </View>
               </View>
             );
           }}

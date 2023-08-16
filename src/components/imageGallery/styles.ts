@@ -9,10 +9,6 @@ export const styles = StyleSheet.create({
     body: {
       height: deviceHeight
     },
-    image: {
-      width: deviceWidth,
-      height: deviceHeight,
-    },
     formContainer: {
       flexDirection: 'column',
       justifyContent: 'center',
@@ -34,5 +30,21 @@ export const styles = StyleSheet.create({
       backgroundColor: COLORS.white,
       padding: 10,
       marginRight: 10,
+    },
+    imageList: {
+      width: deviceWidth,
+      flexDirection: 'column',
+    },
+    image: {
+      width: deviceWidth,
+      height: 630
+    },
+    description: {
+      padding: 7,
+    },
+    alt: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: COLORS.black,
     },
   });
