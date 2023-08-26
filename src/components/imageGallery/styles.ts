@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     },
     inputContainer: {
       width: '100%',
-      height: 80,
+      height: 60,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
@@ -37,10 +37,10 @@ export const styles = StyleSheet.create({
     },
     image: {
       width: deviceWidth,
-      height: 630
+      height: 650
     },
     description: {
-      padding: 7,
+      padding: 5,
     },
     alt: {
       fontSize: 16,

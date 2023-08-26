@@ -19,6 +19,7 @@ import {
 } from '../../utils/generalUtils';
 import {COLORS} from '../../styles/colors';
 import {Image} from '../../types/imageTypes';
+import MyLoader from '../myLoader/MyLoader';
 
 const ImageGalleryScreen = () => {
   const [images, setImages] = useState<Image[]>([]);
@@ -27,6 +28,7 @@ const ImageGalleryScreen = () => {
   const [page, setPage] = useState(1);
   const [error, setError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -41,6 +43,7 @@ const ImageGalleryScreen = () => {
     quantity: string,
     page: number,
   ) => {
+    setIsLoading(true);
     setPage(getRandomPage(1, 100));
     const API_URL = `https://api.pexels.com/v1/search?page=${page}&query=${category}&orientation=portrait&size=small&per_page=${quantity}}`;
     const data = await fetch(API_URL, {
@@ -50,6 +53,7 @@ const ImageGalleryScreen = () => {
     });
     const {photos} = await data.json();
     setImages(photos);
+    setIsLoading(false);
   };
 
   const isValidForm = () => {
@@ -101,27 +105,31 @@ const ImageGalleryScreen = () => {
           </View>
           {error ? <Text style={{color: COLORS.red}}>{error}</Text> : null}
         </View>
-        <FlatList
-          data={images}
-          keyExtractor={item => item.id.toString()}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => {
-            return (
-              <View style={styles.imageList}>
-                <ImageBackground
-                  source={{uri: item.src.portrait}}
-                  style={styles.image}
-                />
-                <View style={styles.description}>
-                  <Text style={styles.alt}>{item.alt}</Text>
-                  <Text>{item.photographer}</Text>
+        {isLoading ? (
+          <MyLoader />
+        ) : (
+          <FlatList
+            data={images}
+            keyExtractor={item => item.id.toString()}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item}) => {
+              return (
+                <View style={styles.imageList}>
+                  <ImageBackground
+                    source={{uri: item.src.portrait}}
+                    style={styles.image}
+                  />
+                  <View style={styles.description}>
+                    <Text style={styles.alt}>{item.alt}</Text>
+                    <Text>{item.photographer}</Text>
+                  </View>
                 </View>
-              </View>
-            );
-          }}
-        />
+              );
+            }}
+          />
+        )}
       </View>
     </ScrollView>
   );
