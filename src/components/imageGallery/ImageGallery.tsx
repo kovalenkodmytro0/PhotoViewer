@@ -28,7 +28,7 @@ const ImageGalleryScreen = () => {
   const [page, setPage] = useState(1);
   const [error, setError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -43,17 +43,22 @@ const ImageGalleryScreen = () => {
     quantity: string,
     page: number,
   ) => {
-    setIsLoading(true);
-    setPage(getRandomPage(1, 100));
-    const API_URL = `https://api.pexels.com/v1/search?page=${page}&query=${category}&orientation=portrait&size=small&per_page=${quantity}}`;
-    const data = await fetch(API_URL, {
-      headers: {
-        Authorization: ACCES_KEY,
-      },
-    });
-    const {photos} = await data.json();
-    setImages(photos);
-    setIsLoading(false);
+    try {
+      setLoading(true);
+      setPage(getRandomPage(1, 100));
+      const API_URL = `https://api.pexels.com/v1/search?page=${page}&query=${category}&orientation=portrait&size=small&per_page=${quantity}}`;
+      const data = await fetch(API_URL, {
+        headers: {
+          Authorization: ACCES_KEY,
+        },
+      });
+      const {photos} = await data.json();
+      setImages(photos);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const isValidForm = () => {
